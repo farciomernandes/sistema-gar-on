@@ -19,30 +19,6 @@ export const UserSchema = new EntitySchema<User>({
       type: 'varchar',
       nullable: false,
     },
-    name: {
-      type: 'varchar',
-      nullable: false,
-    },
-    cpf: {
-      type: 'varchar',
-      nullable: false,
-    },
-    document: {
-      type: 'varchar',
-      nullable: false,
-    },
-    sex: {
-      type: 'varchar',
-      nullable: false,
-    },
-    birthdate: {
-      type: 'varchar',
-      nullable: false,
-    },
-    phone: {
-      type: 'varchar',
-      nullable: false,
-    },
     role_id: {
       type: 'uuid',
       nullable: true,

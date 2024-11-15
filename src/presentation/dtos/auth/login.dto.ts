@@ -33,10 +33,4 @@ export class AuthenticatedDto {
   @Expose()
   access_token: string;
 
-  @ApiProperty({
-    type: String,
-    example: 'John Doe',
-  })
-  @IsString()
-  name: string;
 }

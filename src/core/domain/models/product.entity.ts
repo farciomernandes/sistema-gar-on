@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 
 import { Category } from './category.entity';
-import { ProductVariables } from './product_variables.entity';
 
 @Entity('products')
 export class Product {
@@ -23,13 +22,19 @@ export class Product {
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
+  @Column({ type: 'int' })
+  quantity: number;
+
+  @Column({ type: 'text' })
+  description: string;
+
+  @Column({ type: 'text' })
+  unit: string;
+
+  @Column({ type: 'numeric' })
+  price: number;
+
   @Column()
   category_id: string;
-
-  @OneToMany(
-    () => ProductVariables,
-    (product_variables) => product_variables.product,
-  )
-  product_variables: ProductVariables[];
 
 }

@@ -70,32 +70,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
         name: `%${params.name}%`,
       });
     }
-  
-    if (isAdmin) {
-      queryBuilder.leftJoinAndSelect('product.product_variables', 'product_variables');
-    } else {
-      queryBuilder.innerJoinAndSelect('product.product_variables', 'product_variables');
-  
-      if (params.price) {
-        queryBuilder.andWhere('product_variables.price = :price', {
-          price: params.price,
-        });
-      }
-  
-      if (params.sku) {
-        queryBuilder.andWhere('product_variables.sku = :sku', {
-          sku: params.sku,
-        });
-      }
-  
-      if (params.discount !== undefined) {
-        const discountValue = params.discount ? 1 : 0;
-        queryBuilder.andWhere('product_variables.discount = :discount', {
-          discount: discountValue,
-        });
-      }
-    }
-  
+
     queryBuilder.leftJoinAndSelect('product.category', 'category');
   
     const [products, total] = await queryBuilder

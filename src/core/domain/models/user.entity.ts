@@ -19,24 +19,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
-  name: string;
-
-  @Column()
-  cpf: string;
-
-  @Column()
-  document: string;
-
-  @Column()
-  sex: string;
-
-  @Column()
-  birthdate: string;
-
-  @Column()
-  phone: string;
-
   @Column({ nullable: true })
   role_id: string;
 

@@ -21,26 +21,6 @@ export class CategoryModelDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({
-    type: String,
-    example: 'Image Link',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  image_link: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Category Description',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
   static toDto(payload: CategoryModelDto): CategoryModelDto {
     return plainToInstance(CategoryModelDto, payload, {
       excludeExtraneousValues: true,

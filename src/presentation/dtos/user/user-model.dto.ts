@@ -23,66 +23,6 @@ export class UserModelDto {
   email: string;
 
   @ApiProperty({
-    type: String,
-    example: 'John Doe',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @ApiProperty({
-    type: String,
-    example: '12345678900',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  cpf: string;
-
-  @ApiProperty({
-    type: String,
-    example: '123456789',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  document: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Male',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  sex: string;
-
-  @ApiProperty({
-    type: String,
-    example: '1990-01-01',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  birthdate: string;
-
-  @ApiProperty({
-    type: String,
-    example: '1234567890',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
-
-  @ApiProperty({
     type: RoleModel,
     example: RoleModel,
   })
@@ -150,84 +90,10 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   email: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'John Doe',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @ApiProperty({
-    type: String,
-    example: '12345678900',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  cpf: string;
-
-  @ApiProperty({
-    type: String,
-    example: '123456789',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  document: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Male',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  sex: string;
-
-  @ApiProperty({
-    type: String,
-    example: '1990-01-01',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  birthdate: string;
-
-  @ApiProperty({
-    type: String,
-    example: '1234567890',
-    required: true,
-  })
-  @Expose()
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
 }
 
 export class UserParamsDto {
-  @ApiProperty({
-    type: String,
-    example: '01496012399',
-    description: 'Cpf do usuário',
-    required: false,
-  })
-  cpf?: string;
-
-  @ApiProperty({
-    example: 'John Doe',
-    description: 'Nome do usuário associado ao pedido',
-    required: false,
-  })
-  name?: string;
-
+  
   @ApiProperty({
     example: 1,
     description: 'Número da página desejada',

@@ -23,8 +23,7 @@ export abstract class CategoryRepository
   abstract create(payload: AddCategoryDto): Promise<Category>;
   abstract delete(id: string): Promise<void>;
   abstract update(
-    payload: Omit<UpdateCategoryDto, 'image_link'>,
+    payload: UpdateCategoryDto,
     id: string,
-    image_link?: any,
   ): Promise<Category>;
 }

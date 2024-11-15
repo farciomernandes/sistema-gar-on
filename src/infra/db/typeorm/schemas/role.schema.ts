@@ -1,5 +1,4 @@
 import { EntitySchema } from 'typeorm/entity-schema/EntitySchema';
-import { SchemasEnum } from '../../schema.enum';
 import { Role } from '@/core/domain/models/role.entity';
 
 export const RoleSchema = new EntitySchema<Role>({

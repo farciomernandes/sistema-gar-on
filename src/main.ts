@@ -12,33 +12,32 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const configService = app.get(ConfigService);
     const currentEnv = configService.get('NODE_ENV') || 'dev';
-    const isProduction = currentEnv === 'production';
     const host = app.getHttpServer().address()?.address || 'localhost';
-    const swaggerBasePath = isProduction ? '/casa-das-bicicletas2' : '';
+    const swaggerBasePath = '';
     app.useGlobalPipes(new ValidationPipe());
 
     app.useGlobalFilters(new AllExceptionsFilter());
     LogServerStatus.logEnv({ currentEnv });
+    const swaggerRoute = `${swaggerBasePath}/docs`;
 
     const setupSwagger = (application: INestApplication) => {
-      const swaggerRoute = `${swaggerBasePath}/docs`;
       application.use(
         [swaggerRoute, `${swaggerBasePath}/docs-json`],
         basicAuth({
           challenge: true,
           users: {
-            [configService.get('SISTEMA_GARÇOM_SWAGGER_USERNAME')]:
-              configService.get('SISTEMA_GARÇOM_SWAGGER_PASSWORD'),
+            [configService.get('SISTEMA_GARCOM_SWAGGER_USERNAME')]:
+              configService.get('SISTEMA_GARCOM_SWAGGER_PASSWORD'),
           },
         }),
       );
 
       const config = new DocumentBuilder()
-        .setTitle(configService.get('SISTEMA_GARÇOM_SWAGGER_TITLE'))
+        .setTitle(configService.get('SISTEMA_GARCOM_SWAGGER_TITLE'))
         .setDescription(
-          configService.get('SISTEMA_GARÇOM_SWAGGER_DESCRIPTION'),
+          configService.get('SISTEMA_GARCOM_SWAGGER_DESCRIPTION'),
         )
-        .setVersion(configService.get('SISTEMA_GARÇOM_SWAGGER_VERSION'))
+        .setVersion(configService.get('SISTEMA_GARCOM_SWAGGER_VERSION'))
         .addBearerAuth()
         .build();
 
@@ -46,15 +45,16 @@ async function bootstrap() {
       SwaggerModule.setup(swaggerRoute, application, document);
     };
 
-    // Configuração do CORS para permitir acesso de todos os domínios
     app.enableCors();
 
     setupSwagger(app);
 
-    const port = configService.get('SISTEMA_GARÇOM_PORT') || 3000;
+    const port = configService.get('SISTEMA_GARCOM_PORT') || 3000;
 
     await app.listen(port, '0.0.0.0');
     LogServerStatus.logSuccess({ port, host });
+    LogServerStatus.logWarn(swaggerRoute);
+
   } catch (error) {
     LogServerStatus.logError({ error });
     console.error('Error starting the application:', error);

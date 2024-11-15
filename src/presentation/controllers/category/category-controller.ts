@@ -67,22 +67,18 @@ export class CategoryController {
     type: CategoryModelDto,
   })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('image_link', multerConfig))
   @ApiBearerAuth()
   async create(
-    @UploadedFile() image_link: any,
-    @Body() payload: Omit<AddCategoryDto, 'image_link'>,
+    @Body() payload: AddCategoryDto,
   ): Promise<CategoryModelDto> {
     try {
-      return await this.dbAddCategory.create(payload, image_link);
+      return await this.dbAddCategory.create(payload);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
   }
 
   @Put(':id')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('image_link', multerConfig))
   @ApiBody({
     type: UpdateCategoryDto,
   })
@@ -95,10 +91,9 @@ export class CategoryController {
   async update(
     @Param('id') id: string,
     @Body() payload: Omit<CategoryModelDto, 'id'>,
-    @UploadedFile() image_link: any
   ): Promise<Category> {
     try {
-      return await this.dbUpdateCategory.update(payload, id, image_link);
+      return await this.dbUpdateCategory.update(payload, id);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

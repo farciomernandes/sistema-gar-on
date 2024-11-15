@@ -3,8 +3,7 @@ import { UpdateCategoryDto } from '@/presentation/dtos/category/update-category.
 
 export abstract class IDbUpdateCategoryRepository {
   abstract update(
-    payload: Omit<UpdateCategoryDto, 'image_link'>,
+    payload: UpdateCategoryDto,
     id: string,
-    image_link: any
   ): Promise<Category>;
 }

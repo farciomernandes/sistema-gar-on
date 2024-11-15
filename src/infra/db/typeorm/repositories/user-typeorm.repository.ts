@@ -51,16 +51,6 @@ export class UserTypeOrmRepository implements UserRepository {
 
       queryBuilder.leftJoinAndSelect('users.role', 'role');
 
-      if (params.name) {
-        queryBuilder.where('users.name LIKE :name', {
-          name: `%${params.name}%`,
-        });
-      }
-
-      if (params.cpf) {
-        queryBuilder.andWhere('users.cpf = :cpf', { cpf: params.cpf });
-      }
-
       const skip = (params.page - 1) * params.limit;
 
       const [users, total] = await queryBuilder

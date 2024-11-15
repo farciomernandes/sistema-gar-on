@@ -11,5 +11,3 @@ export const TypeOrmDataSource = new DataSource({
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, 'typeorm/migrations/*.{js,ts}')],
 });
-
-console.log('Entidades:', [join(__dirname, 'typeorm/schemas/*.schema.{js,ts}')]);

@@ -9,9 +9,8 @@ export class CategoryTypeOrmRepository implements CategoryRepository {
     return this.categoryRepository.findOne({ where: { name } });
   }
   async update(
-    payload: Omit<CategoryModelDto, 'id'>,
+    payload: CategoryModelDto,
     id: string,
-    image_link?: string,
   ): Promise<Category> {
     try {
       const category = await this.categoryRepository.findOneOrFail({
@@ -20,7 +19,6 @@ export class CategoryTypeOrmRepository implements CategoryRepository {
 
       const updateCategory = {
         ...payload,
-        image_link,
       };
 
       this.categoryRepository.merge(category, updateCategory);

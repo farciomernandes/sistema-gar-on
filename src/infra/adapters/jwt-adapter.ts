@@ -8,7 +8,7 @@ import { sign as jwtSign, verify as jwtVerify } from 'jsonwebtoken';
 export class JwtAdapter implements Encrypter, Decrypter {
   private secret: string;
   constructor(private readonly configService: ConfigService) {
-    this.secret = configService.get<string>('SISTEMA_GARÇOM__SECRET_KEY');
+    this.secret = configService.get<string>('SISTEMA_GARCOM__SECRET_KEY');
   }
 
   async encrypt(payload: any): Promise<string> {

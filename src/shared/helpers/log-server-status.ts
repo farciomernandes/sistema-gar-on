@@ -8,6 +8,10 @@ export namespace LogServerStatus {
     const message = `🚀  Server ready at http://${host}:${formattedPort}`;
     Logger.log(message, 'Bootstrap', false);
   };
+  export const logWarn = (message) => {
+    Logger.log(message, 'Bootstrap', false);
+  };
+
 
   export const logError = ({ error }: { error: Error }) => {
     Logger.error(`❌ Error starting server, ${error}`, 'Bootstrap');

@@ -1,8 +1,6 @@
 import { EntitySchema } from 'typeorm';
-import { SchemasEnum } from '../../schema.enum';
 import { Product } from '@/core/domain/models/product.entity';
 import { Category } from '@/core/domain/models/category.entity';
-import { ProductVariables } from '@/core/domain/models/product_variables.entity';
 
 export const ProductsSchema = new EntitySchema<Product>({
   name: Product.name,
@@ -20,7 +18,17 @@ export const ProductsSchema = new EntitySchema<Product>({
       length: 255,
       nullable: false,
     },
-
+    description: {
+      type: 'text',
+      nullable: false,
+    },
+    price: {
+      type: 'numeric',
+      nullable: false,
+    },
+    unit: {
+      type: 'varchar',
+    },
     category_id: {
       type: 'uuid',
       nullable: false,
@@ -31,12 +39,6 @@ export const ProductsSchema = new EntitySchema<Product>({
       type: 'many-to-one',
       target: () => Category,
       joinColumn: { name: 'category_id' },
-      eager: true,
-    },
-    product_variables: {
-      type: 'one-to-many',
-      target: () => ProductVariables,
-      inverseSide: 'product',
       eager: true,
     },
   },

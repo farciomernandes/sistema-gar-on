@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
 import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { CategoryModelDto } from '../category/category-model.dto';
-import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
 
 export class ProductModelDto {
   @ApiProperty({
@@ -33,14 +32,6 @@ export class ProductModelDto {
   @ValidateNested()
   category: CategoryModelDto;
 
-  @ApiProperty({
-    type: ProductVariablesModel,
-    required: true,
-    isArray: true,
-  })
-  @Expose()
-  product_variables: ProductVariablesModel[];
-
   static toDto(payload: any): ProductModelDto {
 
     const product = plainToClass(ProductModelDto, payload, {
@@ -48,17 +39,9 @@ export class ProductModelDto {
     });
     const category = CategoryModelDto.toDto(payload.category);
 
-    let product_variables = []
-    if(payload.product_variables){
-      product_variables = payload.product_variables.map((variable) =>
-        ProductVariablesModel.toDto(variable),
-      );
-    }
-
     return {
       ...product,
       category,
-      product_variables,
     };
   }
 }

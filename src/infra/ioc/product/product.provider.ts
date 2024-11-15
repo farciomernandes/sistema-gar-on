@@ -15,9 +15,6 @@ import { DbUpdateProduct } from '@/core/application/product/db-update-product';
 import { CategoryRepository } from '@/core/domain/protocols/repositories/category';
 import { CategoryTypeOrmRepository } from '@/infra/db/typeorm/repositories/category-typeorm.repository';
 import { Category } from '@/core/domain/models/category.entity';
-import { ProductVariablesTypeOrmRepository } from '@/infra/db/typeorm/repositories/product_variables-typeorm.repository';
-import { ProductVariables } from '@/core/domain/models/product_variables.entity';
-import { ProductVariablesRepository } from '@/core/domain/protocols/repositories/product_variable';
 
 export const productProvider: Provider[] = [
   DbAddProduct,
@@ -34,19 +31,6 @@ export const productProvider: Provider[] = [
   {
     provide: ProductRepository,
     useClass: ProductTypeOrmRepository,
-  },
-  {
-    provide: ProductVariablesTypeOrmRepository,
-    useFactory: (dataSource: DataSource) => {
-      return new ProductVariablesTypeOrmRepository(
-        dataSource.getRepository(ProductVariables),
-      );
-    },
-    inject: [getDataSourceToken()],
-  },
-  {
-    provide: ProductVariablesRepository,
-    useClass: ProductVariablesTypeOrmRepository,
   },
   {
     provide: CategoryTypeOrmRepository,
@@ -81,11 +65,10 @@ export const productProvider: Provider[] = [
     useFactory: (
       productRepository: ProductRepository,
       categoryRepository: CategoryRepository,
-      productVariablesRepository: ProductVariablesRepository,
     ): DbUpdateProduct => {
-      return new DbUpdateProduct(productRepository, categoryRepository, productVariablesRepository);
+      return new DbUpdateProduct(productRepository, categoryRepository);
     },
-    inject: [ProductTypeOrmRepository, CategoryTypeOrmRepository, ProductVariablesTypeOrmRepository],
+    inject: [ProductTypeOrmRepository, CategoryTypeOrmRepository],
   },
   {
     provide: IDbDeleteProductRepository,

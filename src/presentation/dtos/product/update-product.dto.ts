@@ -2,7 +2,6 @@ import { Expose, plainToInstance } from 'class-transformer';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { Optional } from '@nestjs/common';
-import { ProductVariablesModel } from '../product_variable/product_variables-model.dto';
 
 export class UpdateProductModelDto {
   @ApiProperty({
@@ -18,14 +17,6 @@ export class UpdateProductModelDto {
   })
   @Expose()
   category_id: string;
-
-  @ApiProperty({
-    type: String,
-    example: ProductVariablesModel,
-  })
-  @Expose()
-  @Optional()
-  product_variables?: ProductVariablesModel[];
 
   static toDto(payload: UpdateProductModelDto): UpdateProductModelDto {
     return plainToInstance(UpdateProductModelDto, payload, {

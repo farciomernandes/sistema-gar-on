@@ -13,26 +13,6 @@ export class AddCategoryDto {
   @IsString()
   name: string;
 
-  @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'Image file',
-  })
-  @IsNotEmpty()
-  @IsString()
-  @Expose()
-  image_link: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Category Description',
-    required: true,
-  })
-  @Expose()
-  @IsNotEmpty()
-  @IsString()
-  description: string;
-
   static toDto(payload: AddCategoryDto): AddCategoryDto {
     return plainToClass(AddCategoryDto, payload, {
       excludeExtraneousValues: true,

@@ -50,22 +50,6 @@ export class ProductParamsDTO {
   @Expose()
   limit: number;
 
-  @ApiProperty({
-    type: String,
-    example: '00001',
-    required: false,
-  })
-  @Expose()
-  sku: string;
-
-  @ApiProperty({
-    type: String,
-    example: true,
-    required: false,
-  })
-  @Expose()
-  discount: boolean;
-
   static toDTO(payload: any): ProductParamsDTO {
     return plainToClass(ProductParamsDTO, payload, {
       excludeExtraneousValues: true,

@@ -17,7 +17,6 @@ import { TypeOrmDataSource } from './infra/db/database.provider';
 import { RoleController } from './presentation/controllers/role/role-controller';
 import { UserModule } from './infra/ioc/user/user.module';
 import { CategoryModule } from './infra/ioc/category/category.module';
-import { ProductVariablesModule } from './infra/ioc/product_variable/product_variables.module';
 import { ProductModule } from './infra/ioc/product/product.module';
 import { AuthModule } from './infra/ioc/auth/auth.module';
 import { HealthModule } from './infra/ioc/health.module';
@@ -45,7 +44,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     UserModule,
     CategoryModule,
     ProductModule,
-    ProductVariablesModule,
   ],
   controllers: [RoleController],
   providers: [
@@ -60,13 +58,6 @@ import { ScheduleModule } from '@nestjs/schedule';
   ],
 })
 export class AppModule implements NestModule {
-
-
-  private readonly product_variableEndpoints = [
-    { path: 'api/v1/product_variables**', method: RequestMethod.POST },
-    { path: 'api/v1/product_variables**', method: RequestMethod.PUT },
-    { path: 'api/v1/product_variables**', method: RequestMethod.DELETE },
-  ];
 
   private readonly userEndpoints = [
     { path: 'api/v1/users**', method: RequestMethod.GET },
@@ -93,7 +84,6 @@ export class AppModule implements NestModule {
         ...this.userEndpoints,
         ...this.categoryEndpoints,
         ...this.productEndpoints,
-        ...this.product_variableEndpoints,
         { path: 'api/v1/role', method: RequestMethod.ALL },
       );
   }

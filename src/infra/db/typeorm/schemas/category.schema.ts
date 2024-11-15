@@ -16,13 +16,5 @@ export const CategorySchema = new EntitySchema<Category>({
       type: 'varchar',
       nullable: false,
     },
-    image_link: {
-      type: 'varchar',
-      nullable: false,
-    },
-    description: {
-      type: 'varchar',
-      nullable: false,
-    },
   },
 });

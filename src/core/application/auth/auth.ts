@@ -34,7 +34,7 @@ export class Auth {
           });
           return {
             accessToken,
-            name: user.name,
+            name: '',
           };
         }
       }
