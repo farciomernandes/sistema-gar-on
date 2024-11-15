@@ -15,7 +15,7 @@ export class ProductModelDto {
   @ApiProperty({
     type: String,
     example: 'Product Name',
-    required: true,
+    required: false,
   })
   @Expose()
   @IsNotEmpty()
@@ -25,7 +25,7 @@ export class ProductModelDto {
   @ApiProperty({
     type: String,
     example: 'Product unit',
-    required: true,
+    required: false,
   })
   @Expose()
   @IsNotEmpty()
@@ -33,18 +33,35 @@ export class ProductModelDto {
   unit: string;
 
   @ApiProperty({
-    type: Number,
-    example:  1,
-    required: true,
+    type: String,
+    example: 'Product unit',
+    required: false,
   })
   @Expose()
   @IsNotEmpty()
+  @IsString()
+  description: string;
+
+  @ApiProperty({
+    type: Number,
+    example:  1,
+    required: false,
+  })
+  @Expose()
   quantity: number;
+
+  @ApiProperty({
+    type: Number,
+    example:  1,
+    required: false,
+  })
+  @Expose()
+  price: number;
 
   @ApiProperty({
     type: CategoryModelDto,
     example: CategoryModelDto,
-    required: true,
+    required: false,
   })
   @Expose()
   @IsNotEmpty()

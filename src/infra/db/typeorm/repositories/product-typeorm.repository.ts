@@ -18,25 +18,31 @@ export class ProductTypeOrmRepository implements ProductRepository {
 
   async update(payload: UpdateProductModelDto, id: string): Promise<Product> {
     try {
-      const { name, category_id } = payload;
-
-      const query = `
-        UPDATE users.products
-        SET
-          name = COALESCE($1, name), 
-          category_id = COALESCE($2, category_id)
-        WHERE
-          id = $3
-      `;
-
-      await this.productRepository.query(query, [name, category_id, id]);
-
-      return this.productRepository.findOneOrFail({ where: { id } });
+      const { name, unit, price, description, category_id } = payload;
+  
+      const product = await this.productRepository.findOne({
+        where: { id }
+      });
+  
+      if (!product) {
+        throw new Error('Product not found');
+      }
+  
+      product.name = name ?? product.name;
+      product.unit = unit ?? product.unit;
+      product.price = price ?? product.price;
+      product.description = description ?? product.description;
+      product.category_id = category_id ?? product.category_id;
+  
+      await this.productRepository.save(product);
+  
+      return product;
     } catch (error) {
       console.log(error);
       throw new Error('Error updating product');
     }
   }
+  
 
   async findById(id: string): Promise<Product> {
     try {

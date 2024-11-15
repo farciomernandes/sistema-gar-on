@@ -7,7 +7,7 @@ export class AddProductModelDto {
   @ApiProperty({
     type: String,
     example: 'Product Name',
-    required: true,
+    required: false,
   })
   @Expose()
   @IsNotEmpty()
@@ -15,18 +15,8 @@ export class AddProductModelDto {
   name: string;
 
   @ApiProperty({
-    type: String,
-    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
-    required: true,
-  })
-  @Expose()
-  @IsNotEmpty()
-  @IsUUID()
-  category_id: string;
-
-  @ApiProperty({
     type: Number,
-    required: true,
+    required: false,
   })
   quantity: number;
 
@@ -40,16 +30,26 @@ export class AddProductModelDto {
   @ApiProperty({
     type: String,
     example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
-    required: true,
+    required: false,
   })
   unit: string;
 
   @ApiProperty({
     type: Number,
     example: 12,
-    required: true,
+    required: false,
   })
   price: number;
+
+  @ApiProperty({
+    type: String,
+    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
+    required: false,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsUUID()
+  category_id: string;
 
   static toDto(payload: AddProductModelDto): AddProductModelDto {
     return plainToInstance(AddProductModelDto, payload, {

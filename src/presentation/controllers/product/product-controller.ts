@@ -89,6 +89,8 @@ export class ProductController {
           name: product.name,
           quantity: product.quantity,
           unit: product.unit,
+          price: product.price,
+          description: product.description
         });
       });
     

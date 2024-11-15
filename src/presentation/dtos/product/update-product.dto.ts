@@ -1,15 +1,42 @@
 import { Expose, plainToInstance } from 'class-transformer';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { Optional } from '@nestjs/common';
 
 export class UpdateProductModelDto {
   @ApiProperty({
     type: String,
     example: 'Product Name',
+    required: false,
   })
   @Expose()
   name: string;
+
+  @ApiProperty({
+    type: Number,
+    required: false,
+  })
+  quantity: number;
+
+  @ApiProperty({
+    type: String,
+    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
+    required: false,
+  })
+  description: string;
+
+  @ApiProperty({
+    type: String,
+    example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
+    required: false,
+  })
+  unit: string;
+
+  @ApiProperty({
+    type: Number,
+    example: 12,
+    required: false,
+  })
+  price: number;
 
   @ApiProperty({
     type: String,
