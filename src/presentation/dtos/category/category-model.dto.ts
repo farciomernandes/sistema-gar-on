@@ -14,11 +14,10 @@ export class CategoryModelDto {
   @ApiProperty({
     type: String,
     example: 'Category Name',
-    required: true,
+    required: false,
   })
   @Expose()
   @IsString()
-  @IsNotEmpty()
   name: string;
 
   static toDto(payload: CategoryModelDto): CategoryModelDto {
