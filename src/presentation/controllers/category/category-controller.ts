@@ -66,12 +66,13 @@ export class CategoryController {
     status: HttpStatus.OK,
     type: CategoryModelDto,
   })
-  @ApiConsumes('multipart/form-data')
   @ApiBearerAuth()
   async create(
     @Body() payload: AddCategoryDto,
   ): Promise<CategoryModelDto> {
     try {
+      console.log('payload ------ ', payload)
+
       return await this.dbAddCategory.create(payload);
     } catch (error) {
       throw new HttpException(error.response, error.status);

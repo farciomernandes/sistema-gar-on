@@ -41,7 +41,11 @@ export class CategoryTypeOrmRepository implements CategoryRepository {
   }
 
   async create(payload: Omit<Category, 'id'>): Promise<Category> {
+    console.log('repository ------ ', payload)
+
     const category = this.categoryRepository.create(payload);
+    console.log('category ------ ', category)
+
     return this.categoryRepository.save(category);
   }
 }

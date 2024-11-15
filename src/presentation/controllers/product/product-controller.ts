@@ -61,7 +61,7 @@ export class ProductController {
     return await this.dbAddProduct.create(payload);
   }
 
-  @Get()
+  @Get('')
   @ApiOkResponse({
     description: 'Returns Products.',
     status: HttpStatus.OK,

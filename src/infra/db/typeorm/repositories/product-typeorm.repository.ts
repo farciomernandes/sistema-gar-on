@@ -52,32 +52,18 @@ export class ProductTypeOrmRepository implements ProductRepository {
     await this.productRepository.delete(id);
   }
 
-  async getAll(params: ProductParamsDTO, isAdmin: boolean): Promise<GetAllProductsDto> {
+  async getAll({type}: ProductParamsDTO, isAdmin: boolean): Promise<GetAllProductsDto> {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
-  
-    if (params.id) {
-      queryBuilder.andWhere('product.id = :id', { id: params.id });
-    }
-  
-    if (params.category_id) {
-      queryBuilder.andWhere('product.category_id = :categoryId', {
-        categoryId: params.category_id,
-      });
-    }
-  
-    if (params.name) {
-      queryBuilder.andWhere('product.name ILIKE :name', {
-        name: `%${params.name}%`,
-      });
-    }
+    
+    console.log('type --> ', type);
 
     queryBuilder.leftJoinAndSelect('product.category', 'category');
   
     const [products, total] = await queryBuilder
-      .take(params.limit)
-      .skip(((params.page || 1) - 1) * params.limit).getManyAndCount();
+      .take(99999)
+      .skip(((1 || 1) - 1) * 99999).getManyAndCount();
   
-    const totalPages = Math.ceil(total / params.limit);
+    const totalPages = Math.ceil(total / 1);
   
     return {
       products: products.map((product) => ProductModelDto.toDto(product)),
