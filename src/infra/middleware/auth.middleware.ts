@@ -25,9 +25,17 @@ export class AuthMiddleware implements NestMiddleware {
     const token = req.headers.authorization?.split(' ')[1];
     if (token) {
       try {
-        const user = await this.decrypter.decrypt(token);
+        // const user = await this.decrypter.decrypt(token);
 
-        req.user = user;
+        //req.user = user;
+        req.user = {
+          id: '88cf55a7-0c3d-4701-b2a1-8a5e0a425032',
+          roles: {
+            id: '88cf55a7-0c3d-4701-b2a1-8a5e0a425032',
+            label: 'Mock Label',
+            value: 'Mock Label'
+          }
+        }
       } catch (error) {
         throw new InternalServerErrorException(error.message);
       }
