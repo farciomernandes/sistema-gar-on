@@ -23,6 +23,25 @@ export class ProductModelDto {
   name: string;
 
   @ApiProperty({
+    type: String,
+    example: 'Product unit',
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  unit: string;
+
+  @ApiProperty({
+    type: Number,
+    example:  1,
+    required: true,
+  })
+  @Expose()
+  @IsNotEmpty()
+  quantity: number;
+
+  @ApiProperty({
     type: CategoryModelDto,
     example: CategoryModelDto,
     required: true,

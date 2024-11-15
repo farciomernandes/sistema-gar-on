@@ -61,7 +61,7 @@ export class ProductController {
     return await this.dbAddProduct.create(payload);
   }
 
-  @Get('')
+  @Get()
   @ApiOkResponse({
     description: 'Returns Products.',
     status: HttpStatus.OK,
@@ -69,9 +69,30 @@ export class ProductController {
   })
   async getAll(
     @Query() queryParams: ProductParamsDTO,
-  ): Promise<GetAllProductsDto> {
+  ): Promise<any> {
     try {
-      return await this.dbListProduct.getAll(queryParams);
+      const { products } = await this.dbListProduct.getAll(queryParams);
+      const categoriesMap: any = {};
+
+      products.forEach((product) => {
+        const categoryName = product.category.name;
+        
+        if (!categoriesMap[categoryName]) {
+          categoriesMap[categoryName] = {
+            category: categoryName,
+            products: [],
+          };
+        }
+    
+        categoriesMap[categoryName].products.push({
+          id: product.id,
+          name: product.name,
+          quantity: product.quantity,
+          unit: product.unit,
+        });
+      });
+    
+      return Object.values(categoriesMap);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

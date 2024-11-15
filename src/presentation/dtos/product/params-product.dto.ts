@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 
 export class ProductParamsDTO {
   @ApiProperty({
@@ -21,16 +22,18 @@ export class ProductParamsDTO {
   @ApiProperty({
     type: Number,
     example: 1,
-    required: true,
+    required: false,
   })
   @Expose()
+  @IsOptional()
   page: number;
 
   @ApiProperty({
     type: Number,
     example: 8,
-    required: true,
+    required: false,
   })
+  @IsOptional()
   @Expose()
   limit: number;
 
