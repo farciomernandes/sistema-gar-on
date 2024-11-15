@@ -12,27 +12,11 @@ export class ProductParamsDTO {
 
   @ApiProperty({
     type: String,
-    example: 'd2f6d8f8-8d0d-4110-bf63-af23fd441138',
+    example: 'snack | stock',
     required: false,
   })
   @Expose()
-  category_id: string;
-
-  @ApiProperty({
-    type: String,
-    example: 'Product Name',
-    required: false,
-  })
-  @Expose()
-  name: string;
-
-  @ApiProperty({
-    type: Number,
-    example: 100,
-    required: false,
-  })
-  @Expose()
-  price: number;
+  type: string;
 
   @ApiProperty({
     type: Number,
