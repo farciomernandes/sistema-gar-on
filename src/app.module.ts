@@ -21,6 +21,7 @@ import { ProductModule } from './infra/ioc/product/product.module';
 import { AuthModule } from './infra/ioc/auth/auth.module';
 import { HealthModule } from './infra/ioc/health.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TableModule } from './infra/ioc/table/table.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     AuthModule,
     RoleModule,
     UserModule,
+    TableModule,
     CategoryModule,
     ProductModule,
   ],
@@ -77,6 +79,12 @@ export class AppModule implements NestModule {
     { path: 'api/v1/products**', method: RequestMethod.DELETE },
   ];
 
+  private readonly tableEndpoints = [
+    { path: 'api/v1/tables**', method: RequestMethod.POST },
+    { path: 'api/v1/tables**', method: RequestMethod.GET },
+    { path: 'api/v1/tables**', method: RequestMethod.DELETE },
+  ];
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
@@ -84,6 +92,7 @@ export class AppModule implements NestModule {
         ...this.userEndpoints,
         ...this.categoryEndpoints,
         ...this.productEndpoints,
+        ...this.tableEndpoints,
         { path: 'api/v1/role', method: RequestMethod.ALL },
       );
   }
