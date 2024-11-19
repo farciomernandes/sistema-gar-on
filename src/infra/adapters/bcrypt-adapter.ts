@@ -12,7 +12,11 @@ export class BcryptAdapter implements IHasher, HashComparer {
   }
 
   async hash(text: string): Promise<string> {
-    const hash = await bcryptjs.hash(text, (this.salt) ?? Number(this.configService.get<string>('SALT')));
+    console.log('BcryptAdapter hash text ', text);
+
+    const hash = await bcryptjs.hash(text, (this.salt) || Number(this.configService.get<string>('SALT') || 12));
+    console.log('BcryptAdapter hash hash ', hash);
+
     return hash;
   }
   async compare(value: string, hash: string): Promise<boolean> {

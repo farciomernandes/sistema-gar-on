@@ -61,14 +61,14 @@ export class ProductTypeOrmRepository implements ProductRepository {
   async getAll({ type }: ProductParamsDTO, isAdmin: boolean): Promise<GetAllProductsDto> {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
   
-    
+    const mapProduct = {
+      'stock': 0,
+      'snack': 1
+    }
     queryBuilder.leftJoinAndSelect('product.category', 'category');
 
-    if(type === 'stocks') {
-      queryBuilder.andWhere('category.name = :type', { type })
-    } else {
-      queryBuilder.andWhere('category.name <> :type', { type: 'stocks' })
-    }
+    queryBuilder.andWhere('product.is_snack = :snack', { snack: mapProduct[type] })
+   
     
     const [products, total] = await queryBuilder
       .take(99999) 

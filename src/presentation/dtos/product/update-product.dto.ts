@@ -39,6 +39,13 @@ export class UpdateProductModelDto {
   price: number;
 
   @ApiProperty({
+    type: Number,
+    required: false,
+    description: '1 para TRUE se for lanche e 0 para FALSE se for um produto de estoque'
+  })
+  is_snack: number;
+
+  @ApiProperty({
     type: String,
     example: '30c50624-fc36-4c51-8d19-e655196dab8d',
   })

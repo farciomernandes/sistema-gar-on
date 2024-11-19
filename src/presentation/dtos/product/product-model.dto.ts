@@ -33,6 +33,14 @@ export class ProductModelDto {
   unit: string;
 
   @ApiProperty({
+    type: Number,
+    example: 1,
+    required: false,
+  })
+  @Expose()
+  is_snack: number;
+
+  @ApiProperty({
     type: String,
     example: 'Product unit',
     required: false,

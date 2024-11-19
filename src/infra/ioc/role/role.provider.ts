@@ -14,6 +14,9 @@ import { IDbUpdateRoleRepository } from '@/core/domain/protocols/db/role/update-
 import { RoleRepository } from '@/core/domain/protocols/repositories/role';
 import { RoleSeed } from '@/infra/db/typeorm/seeds/roles.seeds';
 import { IRoleSeed } from '@/core/domain/protocols/db/role/seed-role';
+import { UserRepository } from '@/core/domain/protocols/repositories/user';
+import { UserTypeOrmRepository } from '@/infra/db/typeorm/repositories/user-typeorm.repository';
+import { User } from '@/core/domain/models/user.entity';
 
 export const roleProvider: Provider[] = [
   DbAddRole,
@@ -22,11 +25,22 @@ export const roleProvider: Provider[] = [
   DbUpdateRole,
   RoleSeed,
   {
-    provide: IRoleSeed,
-    useFactory: (roleRepository: RoleRepository): RoleSeed => {
-      return new RoleSeed(roleRepository);
+    provide: UserTypeOrmRepository,
+    useFactory: (dataSource: DataSource) => {
+      return new UserTypeOrmRepository(dataSource.getRepository(User));
     },
-    inject: [RoleTypeOrmRepository],
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: UserRepository,
+    useClass: UserTypeOrmRepository,
+  },
+  {
+    provide: IRoleSeed,
+    useFactory: (roleRepository: RoleRepository, userRepository: UserRepository): RoleSeed => {
+      return new RoleSeed(roleRepository, userRepository);
+    },
+    inject: [RoleTypeOrmRepository, UserTypeOrmRepository],
   },
   {
     provide: RoleTypeOrmRepository,

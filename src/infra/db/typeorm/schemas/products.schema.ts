@@ -22,6 +22,10 @@ export const ProductsSchema = new EntitySchema<Product>({
       type: 'text',
       nullable: false,
     },
+    is_snack: {
+      type: 'numeric',
+      nullable: true,
+    },
     price: {
       type: 'numeric',
       nullable: false,

@@ -73,26 +73,48 @@ export class ProductController {
     try {
       const { products } = await this.dbListProduct.getAll(queryParams);
       const categoriesMap: any = {};
-
-      products.forEach((product) => {
-        const categoryName = product.category.name;
-        
-        if (!categoriesMap[categoryName]) {
-          categoriesMap[categoryName] = {
-            category: categoryName,
-            products: [],
-          };
-        }
-    
-        categoriesMap[categoryName].products.push({
-          id: product.id,
-          name: product.name,
-          quantity: product.quantity,
-          unit: product.unit,
-          price: product.price,
-          description: product.description
+     
+      if(queryParams.type == 'snack') {
+        products.forEach((product) => {
+          const categoryName = product.category.name;
+          
+          if (!categoriesMap[categoryName]) {
+            categoriesMap[categoryName] = {
+              category: categoryName,
+              snacks: [],
+            };
+          }
+      
+          categoriesMap[categoryName].snacks.push({
+            id: product.id,
+            name: product.name,
+            quantity: product.quantity,
+            unit: product.unit,
+            price: product.price,
+            description: product.description
+          });
         });
-      });
+      } else {
+        products.forEach((product) => {
+          const categoryName = product.category.name;
+          
+          if (!categoriesMap[categoryName]) {
+            categoriesMap[categoryName] = {
+              category: categoryName,
+              stock: [],
+            };
+          }
+      
+          categoriesMap[categoryName].stock.push({
+            id: product.id,
+            name: product.name,
+            quantity: product.quantity,
+            unit: product.unit,
+            price: product.price,
+            description: product.description
+          });
+        });
+      }
     
       return Object.values(categoriesMap);
     } catch (error) {
@@ -100,22 +122,6 @@ export class ProductController {
     }
   }
 
-  @Get('/admin')
-  @ApiOkResponse({
-    description: 'Returns Products.',
-    status: HttpStatus.OK,
-    type: GetAllProductsDto,
-  })
-  @ApiBearerAuth()
-  async getAllAdmin(
-    @Query() queryParams: ProductParamsDTO,
-  ): Promise<GetAllProductsDto> {
-    try {
-      return await this.dbListProduct.getAll(queryParams, true);
-    } catch (error) {
-      throw new HttpException(error.response, error.status);
-    }
-  }
 
   @Put(':id')
   @ApiBody({
