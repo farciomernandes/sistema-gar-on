@@ -30,6 +30,10 @@ export const ProductsSchema = new EntitySchema<Product>({
       type: 'numeric',
       nullable: false,
     },
+    quantity: {
+      type: 'numeric',
+      nullable: true,
+    },
     unit: {
       type: 'varchar',
     },

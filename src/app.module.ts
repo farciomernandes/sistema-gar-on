@@ -22,6 +22,8 @@ import { AuthModule } from './infra/ioc/auth/auth.module';
 import { HealthModule } from './infra/ioc/health.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TableModule } from './infra/ioc/table/table.module';
+import { OrderModule } from './infra/ioc/order/order.module';
+import { OrderItemModule } from './infra/ioc/order_item/order_item.module';
 
 @Module({
   imports: [
@@ -46,6 +48,7 @@ import { TableModule } from './infra/ioc/table/table.module';
     TableModule,
     CategoryModule,
     ProductModule,
+    OrderModule,
   ],
   controllers: [RoleController],
   providers: [

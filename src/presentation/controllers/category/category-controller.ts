@@ -71,7 +71,6 @@ export class CategoryController {
     @Body() payload: AddCategoryDto,
   ): Promise<CategoryModelDto> {
     try {
-      console.log('payload ------ ', payload)
 
       return await this.dbAddCategory.create(payload);
     } catch (error) {

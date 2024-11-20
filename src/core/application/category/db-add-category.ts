@@ -18,7 +18,6 @@ export class DbAddCategory implements IDbAddCategoryRepository {
     payload: AddCategoryDto,
   ): Promise<Category> {
     try {
-      console.log('DbAddCategory ------ ', payload)
 
       const alreadyExists = await this.categoryRepository.findByName(
         payload.name,
@@ -29,7 +28,6 @@ export class DbAddCategory implements IDbAddCategoryRepository {
           `Category with ${payload.name} name already exists`,
         );
       }
-      console.log('alreadyExists ------ ', alreadyExists)
 
       return await this.categoryRepository.create({
         ...payload,

@@ -42,12 +42,7 @@ export class DbAddUser implements IDbAddUserRepository {
         );
       }
 
-      console.log('chegou aqui nao existe o user');
-      console.log('payload.email ', payload.email);
-
       const password_hash = await this.hasher.hash(payload.password);
-
-      console.log('password_hash ', password_hash);
 
       const createdUser = await this.userRepository.create({
         ...payload,
