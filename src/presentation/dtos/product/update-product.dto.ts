@@ -1,6 +1,7 @@
 import { Expose, plainToInstance } from 'class-transformer';
 
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class UpdateProductModelDto {
   @ApiProperty({
@@ -15,6 +16,7 @@ export class UpdateProductModelDto {
     type: Number,
     required: false,
   })
+  @IsOptional()
   quantity: number;
 
   @ApiProperty({
@@ -22,6 +24,7 @@ export class UpdateProductModelDto {
     example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
     required: false,
   })
+  @IsOptional()
   description: string;
 
   @ApiProperty({
