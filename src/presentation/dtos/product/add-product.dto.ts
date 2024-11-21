@@ -1,5 +1,5 @@
 import { Expose, plainToInstance } from 'class-transformer';
-import { IsNotEmpty, IsString, IsUUID, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, IsNumber, IsOptional } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -10,14 +10,14 @@ export class AddProductModelDto {
     required: false,
   })
   @Expose()
-  @IsNotEmpty()
-  @IsString()
+  @IsOptional()
   name: string;
 
   @ApiProperty({
     type: Number,
     required: false,
   })
+  @IsOptional()
   quantity: number;
 
   @ApiProperty({
@@ -40,6 +40,7 @@ export class AddProductModelDto {
     example: 'KG',
     required: false,
   })
+  @IsOptional()
   unit: string;
 
   @ApiProperty({
@@ -47,6 +48,7 @@ export class AddProductModelDto {
     example: 12,
     required: false,
   })
+  @IsOptional()
   price: number;
 
   @ApiProperty({

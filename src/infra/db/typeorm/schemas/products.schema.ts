@@ -16,11 +16,11 @@ export const ProductsSchema = new EntitySchema<Product>({
     name: {
       type: 'varchar',
       length: 255,
-      nullable: false,
+      nullable: true,
     },
     description: {
       type: 'text',
-      nullable: false,
+      nullable: true,
     },
     is_snack: {
       type: 'numeric',
@@ -28,7 +28,7 @@ export const ProductsSchema = new EntitySchema<Product>({
     },
     price: {
       type: 'numeric',
-      nullable: false,
+      nullable: true,
     },
     quantity: {
       type: 'numeric',
@@ -36,6 +36,7 @@ export const ProductsSchema = new EntitySchema<Product>({
     },
     unit: {
       type: 'varchar',
+      nullable: true
     },
     category_id: {
       type: 'uuid',
