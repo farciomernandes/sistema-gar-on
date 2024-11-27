@@ -58,7 +58,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     await this.productRepository.delete(id);
   }
 
-  async getAll({ type }: ProductParamsDTO, isAdmin: boolean): Promise<GetAllProductsDto> {
+  async getAll({ type , id}: ProductParamsDTO, isAdmin: boolean): Promise<GetAllProductsDto> {
     const queryBuilder = this.productRepository.createQueryBuilder('product');
   
     const mapProduct = {
@@ -67,8 +67,11 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
     queryBuilder.leftJoinAndSelect('product.category', 'category');
 
-    queryBuilder.andWhere('product.is_snack = :snack', { snack: mapProduct[type] })
-   
+    queryBuilder.andWhere('product.is_snack = :snack', { snack: mapProduct[type] });
+
+    if(id) {
+      queryBuilder.andWhere('product.id = :id', { id });
+    }
     
     const [products, total] = await queryBuilder
       .take(99999) 

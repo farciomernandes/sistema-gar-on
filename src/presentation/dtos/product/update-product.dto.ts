@@ -10,6 +10,7 @@ export class UpdateProductModelDto {
     required: false,
   })
   @Expose()
+  @IsOptional()
   name: string;
 
   @ApiProperty({
@@ -32,6 +33,7 @@ export class UpdateProductModelDto {
     example: '994fb2cd-0f39-4a71-b15c-333b7e2ff793',
     required: false,
   })
+  @IsOptional()
   unit: string;
 
   @ApiProperty({
@@ -46,6 +48,7 @@ export class UpdateProductModelDto {
     required: false,
     description: '1 para TRUE se for lanche e 0 para FALSE se for um produto de estoque'
   })
+  @IsOptional()
   is_snack: number;
 
   @ApiProperty({
@@ -53,11 +56,7 @@ export class UpdateProductModelDto {
     example: '30c50624-fc36-4c51-8d19-e655196dab8d',
   })
   @Expose()
+  @IsOptional()
   category_id: string;
 
-  static toDto(payload: UpdateProductModelDto): UpdateProductModelDto {
-    return plainToInstance(UpdateProductModelDto, payload, {
-      excludeExtraneousValues: true,
-    });
-  }
 }

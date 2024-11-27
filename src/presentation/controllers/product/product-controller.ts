@@ -91,7 +91,8 @@ export class ProductController {
             quantity: product.quantity,
             unit: product.unit,
             price: product.price,
-            description: product.description
+            description: product.description,
+            category_id: product.category.id
           });
         });
       } else {

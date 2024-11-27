@@ -19,11 +19,6 @@ export class DbUpdateProduct implements IDbUpdateProductRepository {
         throw new BadRequestException(`Category with id ${payload.category_id} not found!`);
       }
 
-      const product = await this.productRepository.findById(id);
-      if (!product) {
-        throw new BadRequestException('Product not found');
-      }
-
       await this.productRepository.update(payload, id);
 
       return await this.productRepository.findById(id);

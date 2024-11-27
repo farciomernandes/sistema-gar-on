@@ -35,7 +35,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     response.status(status).json({
       timestamp: new Date().toISOString(),
       path: request.url,
-      error: typeof message === 'string' ? message : 'An unexpected error occurred.',
+      error: typeof message === 'string' ? message : JSON.stringify(message),
     });
   }
 }
