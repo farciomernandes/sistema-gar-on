@@ -22,6 +22,14 @@ export class OrderModelDto {
   title: string;
 
   @ApiProperty({
+    type: String,
+    example: 'b1ca0fd0-1874-4f90-96aa-342f3ea08150',
+    required: true,
+  })
+  @Expose()
+  table_id: string;
+
+  @ApiProperty({
     type: Number,
     example: 100,
     required: true,
@@ -89,6 +97,7 @@ export class GetAllOrdersDto {
           "id": "00dc7eab-551e-411e-8f89-b162be8fa161",
           "title": "Venda mesa 1",
           "total": 88,
+          'table_id': '1',
           "order_items": [
             {
               "id": "4255c47b-923e-486a-9a77-a2cae18d36ca",
@@ -118,6 +127,7 @@ export class GetAllOrdersDto {
     description: 'Lista de pedidos retornados',
   })
   orders: OrderModelDto[];
+  
 
   @ApiProperty({
     example: 3,
@@ -130,4 +140,5 @@ export class GetAllOrdersDto {
     description: 'Número total de resultados',
   })
   total: number;
+
 }

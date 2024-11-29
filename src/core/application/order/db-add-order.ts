@@ -39,10 +39,10 @@ import { OrderItemTypeOrmRepository } from '@/infra/db/typeorm/repositories/orde
 
         const total = this.calculateTotal(orderItems);
 
-        await this.updateOrderTotal(order.id, total, queryRunner.manager, payload.title);
+        await this.updateOrderTotal(order.id, total, queryRunner.manager, payload.title, payload.table_id);
         order.order_items = orderItems;
         order.total = total;
-
+        order.table_id = payload.table_id;
         await queryRunner.commitTransaction();
 
         return {
@@ -57,7 +57,7 @@ import { OrderItemTypeOrmRepository } from '@/infra/db/typeorm/repositories/orde
     private async createOrder(entityManager: EntityManager) {
       try {
         const order = await this.orderRepository.createTransactionMode(
-          { total: 0, title: '', order_items: [] },
+          { total: 0, title: '', order_items: [], table_id: null },
           entityManager,
         );
   
@@ -151,12 +151,14 @@ import { OrderItemTypeOrmRepository } from '@/infra/db/typeorm/repositories/orde
       total: number,
       entityManager: EntityManager,
       title: string,
+      table_id: string,
     ): Promise<void> {
 
       await this.orderRepository.updateTransactionMode(
         total,
         orderId,
         title,
+        table_id,
         entityManager,
       );
     }

@@ -64,9 +64,11 @@ export class FinancyController {
     isArray: true,
   })
   @ApiBearerAuth()
-  async getAll(): Promise<Financy[]> {
+  async getAll(
+    @Query() payload: GetBalanceDto
+  ): Promise<Financy[]> {
     try {
-      return await this.dbListFinancy.getAll();
+      return await this.dbListFinancy.getAll(payload);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

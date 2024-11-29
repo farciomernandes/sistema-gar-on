@@ -1,5 +1,6 @@
 import { Financy } from '@/core/domain/models/finance.entity';
 import { AddFinancyModelDto } from '@/presentation/dtos/financy/add-financy.dto';
+import { GetBalanceDto } from '@/presentation/dtos/financy/get-balance.dto';
 import { Repository } from 'typeorm';
 
 export class FinancyTypeOrmRepository{
@@ -32,9 +33,29 @@ export class FinancyTypeOrmRepository{
     await this.financyRepository.delete(id);
   }
 
-  async getAll(): Promise<Financy[]> {
-    return this.financyRepository.find();
+  async getAll({ startDate, endDate }: GetBalanceDto): Promise<Financy[]> {
+    try {
+      const whereCondition: any = {};
+  
+      if (startDate && endDate) {
+        whereCondition.transaction_date = {
+          '>=': startDate,
+          '<=': endDate,
+        };
+      } else if (startDate) {
+        whereCondition.transaction_date = { '>=': startDate };
+      } else if (endDate) {
+        whereCondition.transaction_date = { '<=': endDate };
+      }
+  
+      return this.financyRepository.find({
+        where: whereCondition,
+      });
+    } catch (error) {
+      throw new Error('Error fetching finances');
+    }
   }
+  
 
   async create(payload: AddFinancyModelDto): Promise<Financy> {
 
@@ -46,35 +67,37 @@ export class FinancyTypeOrmRepository{
 
   async getCurrentBalance(startDate?: string, endDate?: string): Promise<number> {
     try {
+      if ((startDate && !endDate) || (!startDate && endDate)) {
+        throw new Error('Both startDate and endDate must be provided or neither');
+      }
+  
       const whereCondition: any = {};
-
-      if (startDate) {
-        whereCondition.transaction_date = whereCondition.transaction_date || {};
-        whereCondition.transaction_date['>='] = startDate;
+  
+      if (startDate && endDate) {
+        whereCondition.transaction_date = {
+          '>=': startDate,
+          '<=': endDate,
+        };
       }
-
-      if (endDate) {
-        whereCondition.transaction_date = whereCondition.transaction_date || {};
-        whereCondition.transaction_date['<='] = endDate;
-      }
-
+  
       const finances = await this.financyRepository.find({
         where: whereCondition,
       });
-
+  
       let currentBalance = 0;
-
+  
       for (const finance of finances) {
         if (finance.type === 'INCOME') {
-          currentBalance += finance.value; 
+          currentBalance += finance.value;
         } else if (finance.type === 'OUTCOME') {
           currentBalance -= finance.value;
         }
       }
-
+  
       return currentBalance;
     } catch (error) {
-      throw new Error('Error calculating current balance');
+      throw new Error('Error calculating current balance: ' + error.message);
     }
   }
+  
 }

@@ -133,6 +133,7 @@ export class OrderTypeOrmRepository {
     total: number,
     id: string,
     title: string,
+    table_id: string,
     entityManager?: EntityManager,
   ): Promise<any> {
     try {
@@ -142,7 +143,7 @@ export class OrderTypeOrmRepository {
         where: { id },
       });
 
-      await repository.merge(order, {total, title});
+      await repository.merge(order, {total, title, table_id});
 
       await repository.save(order);
 
