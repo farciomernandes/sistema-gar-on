@@ -105,11 +105,10 @@ export const orderProvider: Provider[] = [
     provide: DbUpdateOrder,
     useFactory: (
       orderRepository: OrderTypeOrmRepository,
-      productRepository: ProductRepository,
     ): DbUpdateOrder => {
-      return new DbUpdateOrder(orderRepository, productRepository);
+      return new DbUpdateOrder(orderRepository);
     },
-    inject: [OrderTypeOrmRepository, ProductTypeOrmRepository],
+    inject: [OrderTypeOrmRepository],
   },
   {
     provide: DbDeleteOrder,

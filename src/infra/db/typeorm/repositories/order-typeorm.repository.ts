@@ -3,7 +3,6 @@ import { Order } from '@/core/domain/models/order.entity';
 import { InternalServerErrorException } from '@nestjs/common';
 import { addDays } from 'date-fns';
 import { AddOrderDto } from '@/presentation/dtos/order/add-order.dto';
-import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
 import { OrderModelDto, OrderParamsDto } from '@/presentation/dtos/order/order-model.dto';
 import { OrderItem } from '@/core/domain/models/order_item.entity';
 
@@ -34,7 +33,7 @@ export class OrderTypeOrmRepository {
   }
 
   async update(
-    payload: UpdateOrderDto,
+    payload: OrderModelDto,
     id: string,
     entityManager?: EntityManager,
   ): Promise<OrderModelDto> {
@@ -42,19 +41,62 @@ export class OrderTypeOrmRepository {
       const repository = entityManager
         ? entityManager.getRepository(Order)
         : this.orderRepository;
-
+  
       const order = await repository.findOneOrFail({
         where: { id },
+        relations: ['order_items'],
       });
-
+  
       await repository.merge(order, payload);
+  
+      if (payload.order_items) {
+        const existingItems = order.order_items;
+  
+        const itemsToRemove = existingItems.filter(
+          (existingItem) => !payload.order_items.some(
+            (newItem) => newItem.id === existingItem.id,
+          ),
+        );
+  
+        const itemsToUpdate = payload.order_items.map((newItem) => {
+          const existingItem = existingItems.find(
+            (item) => item.id === newItem.id,
+          );
+  
+          if (existingItem) {
+            Object.assign(existingItem, newItem);
+  
+            existingItem.sub_total = existingItem.quantity * existingItem.product.price;
+            return existingItem;
+          }
+  
+          const newOrderItem = this.orderItemRepository.create(newItem);
+          newOrderItem.order_id = order.id;
+  
+          newOrderItem.sub_total = newOrderItem.quantity * newOrderItem.product.price;
+          return newOrderItem;
+        });
+  
+        await this.orderItemRepository.save(itemsToUpdate);
+  
+        if (itemsToRemove.length > 0) {
+          await this.orderItemRepository.remove(itemsToRemove);
+        }
+  
+        const newTotal = itemsToUpdate.reduce((total, item) => total + item.sub_total, 0);
+        order.total = newTotal;
+      }
+  
       await repository.save(order);
+  
       const response = await this.findById(id);
       return response;
     } catch (error) {
-      throw new Error('Order not found');
+      throw new InternalServerErrorException(`Order updated error: ${JSON.stringify(error)}`);
     }
   }
+  
+  
 
   async findById(id: string): Promise<any> {
     const queryBuilder = await this.orderRepository

@@ -42,7 +42,28 @@ export class OrderModelDto {
     type: [OrderItemDto],
     isArray: true,
     description: 'Array of OrderItemLocally',
-    example: [OrderItemDto],
+    example: [
+      {
+        "id": "4255c47b-923e-486a-9a77-a2cae18d36ca",
+        "quantity": 2,
+        "order_id": "00dc7eab-551e-411e-8f89-b162be8fa161",
+        "sub_total": 44,
+        "product_id": "217ab8e7-ada5-4074-baff-33070bd735fb",
+        "product": {
+          "id": "217ab8e7-ada5-4074-baff-33070bd735fb",
+          "name": "Hamburguer de Queijo",
+          "description": "Hamburguer gostoso feito na hora com Queijo de javaré albino",
+          "is_snack": 1,
+          "price": 22,
+          "quantity": null,
+          "unit": "KG",
+          "category_id": "b6918087-55e3-427d-856b-c74ff174685a",
+          "category": {
+            "id": "b6918087-55e3-427d-856b-c74ff174685a",
+            "name": "Snack 1"
+          }
+        }
+      }],
   })
   @Expose()
   @IsOptional()
@@ -127,7 +148,7 @@ export class GetAllOrdersDto {
     description: 'Lista de pedidos retornados',
   })
   orders: OrderModelDto[];
-  
+
 
   @ApiProperty({
     example: 3,

@@ -1,5 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { UpdateOrderDto } from '@/presentation/dtos/order/update-order.dto';
+import { Injectable } from '@nestjs/common';
 import { OrderModelDto } from '@/presentation/dtos/order/order-model.dto';
 import { OrderTypeOrmRepository } from '@/infra/db/typeorm/repositories/order-typeorm.repository';
 import { ProductRepository } from '@/core/domain/protocols/repositories/product';
@@ -7,11 +6,9 @@ import { ProductRepository } from '@/core/domain/protocols/repositories/product'
 @Injectable()
 export class DbUpdateOrder {
   constructor(
-    private readonly orderRepository: OrderTypeOrmRepository,
-    private readonly productRepository: ProductRepository,
-  ) {}
+    private readonly orderRepository: OrderTypeOrmRepository) {}
 
-  async update(payload: UpdateOrderDto, id: string): Promise<OrderModelDto> {
+  async update(id: string, payload: OrderModelDto): Promise<OrderModelDto> {
     try {
      
       const order = await this.orderRepository.update(payload, id);

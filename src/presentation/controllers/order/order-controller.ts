@@ -8,6 +8,7 @@ import {
     HttpStatus,
     Param,
     Post,
+    Put,
     Query,
     UseGuards,
   } from '@nestjs/common';
@@ -32,6 +33,7 @@ import {
 import { DbAddOrder } from '@/core/application/order/db-add-order';
 import { DbListOrder } from '@/core/application/order/db-list-order';
 import { DbDeleteOrder } from '@/core/application/order/db-delete-order';
+import { DbUpdateOrder } from '@/core/application/order/db-update-order';
   
   @ApiTags('Order')
   @Controller('api/v1/orders')
@@ -40,6 +42,8 @@ import { DbDeleteOrder } from '@/core/application/order/db-delete-order';
       private readonly dbAddOrder: DbAddOrder,
       private readonly dbListOrder: DbListOrder,
       private readonly dbDeleteOrder: DbDeleteOrder,
+      private readonly dbUpdateOrder: DbUpdateOrder,
+
     ) {}
   
     @ApiBody({
@@ -54,6 +58,24 @@ import { DbDeleteOrder } from '@/core/application/order/db-delete-order';
       @Body() payload: AddOrderDto,
     ): Promise<OrderModelDto> {
       return await this.dbAddOrder.create(payload);
+    }
+
+    @Put(':id')
+    @ApiBody({
+      description: 'Update Order',
+      type: OrderModelDto,
+    })
+    @ApiOkResponse({ type: OrderModelDto })
+    @ApiBearerAuth()
+    async update(
+      @Param('id') id: string,
+      @Body() payload: OrderModelDto,
+    ): Promise<OrderModelDto> {
+      try {
+        return await this.dbUpdateOrder.update(id, payload);
+      } catch (error) {
+        throw new HttpException(error.response, error.status);
+      }
     }
   
     @Get()
