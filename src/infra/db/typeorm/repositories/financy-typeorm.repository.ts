@@ -88,24 +88,39 @@ export class FinancyTypeOrmRepository{
         throw new Error('Both startDate and endDate must be provided or neither');
       }
   
-      const whereCondition: any = {};
+      const queryBuilder = this.financyRepository.createQueryBuilder('financy');
+      let start, end;
   
       if (startDate && endDate) {
-        whereCondition.transaction_date = {
-          '>=': startDate,
-          '<=': endDate,
-        };
+        start = new Date(startDate);
+        end = new Date(endDate);
+  
+        if (start > end) {
+          [start, end] = [end, start];
+        }
+  
+        queryBuilder.where('financy.transaction_date BETWEEN :start AND :end', { 
+          start: start.toISOString(),
+          end: end.toISOString(),
+        });
+      } 
+      else if (startDate) {
+        start = new Date(startDate);
+        queryBuilder.where('financy.transaction_date >= :start', { start: start.toISOString() });
+      } 
+      else if (endDate) {
+        end = new Date(endDate);
+        queryBuilder.where('financy.transaction_date <= :end', { end: end.toISOString() });
       }
   
-      const finances = await this.financyRepository.find({
-        where: whereCondition,
-      });
+      const finances = await queryBuilder.getMany();
+  
+      console.log(finances);
   
       let currentBalance = 0;
       let cashIn = 0;
       let cashOut = 0;
   
-      // Itera pelas transações financeiras para calcular os totais
       for (const finance of finances) {
         if (finance.type === 'INCOME') {
           cashIn += finance.value;
@@ -125,6 +140,7 @@ export class FinancyTypeOrmRepository{
       throw new Error('Error calculating current balance: ' + error.message);
     }
   }
+  
   
   
 }
