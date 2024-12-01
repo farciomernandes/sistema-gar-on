@@ -35,28 +35,41 @@ export class FinancyTypeOrmRepository{
 
   async getAll({ startDate, endDate }: GetBalanceDto): Promise<Financy[]> {
     try {
-      const whereCondition: any = {};
-  
+      const queryBuilder = this.financyRepository.createQueryBuilder('financy');
+      let start, end;
+      
       if (startDate && endDate) {
-        whereCondition.transaction_date = {
-          '>=': startDate,
-          '<=': endDate,
-        };
-      } else if (startDate) {
-        whereCondition.transaction_date = { '>=': startDate };
-      } else if (endDate) {
-        whereCondition.transaction_date = { '<=': endDate };
+        start = new Date(startDate);
+        end = new Date(endDate);
+        
+        if (start > end) {
+          [start, end] = [end, start];
+        }
+  
+        queryBuilder.where('financy.transaction_date BETWEEN :start AND :end', { 
+          start: start.toISOString(),
+          end: end.toISOString(),
+        });
+      } 
+      else if (startDate) {
+        start = new Date(startDate);
+        queryBuilder.where('financy.transaction_date >= :start', { start: start.toISOString() });
+      } 
+      else if (endDate) {
+        end = new Date(endDate);
+        queryBuilder.where('financy.transaction_date <= :end', { end: end.toISOString() });
       }
   
-      return this.financyRepository.find({
-        where: whereCondition,
-      });
+      const response = await queryBuilder.getMany();
+  
+      return response;
     } catch (error) {
+      console.error('Error fetching finances:', error);
       throw new Error('Error fetching finances');
     }
   }
   
-
+  
   async create(payload: AddFinancyModelDto): Promise<Financy> {
 
     const financy = this.financyRepository.create(payload);
