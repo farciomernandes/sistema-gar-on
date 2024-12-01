@@ -78,7 +78,11 @@ export class FinancyTypeOrmRepository{
     return this.financyRepository.save(financy);
   }
 
-  async getCurrentBalance(startDate?: string, endDate?: string): Promise<number> {
+  async getCurrentBalance(startDate?: string, endDate?: string): Promise<{
+    currentBalance: number,
+    cashIn: number,
+    cashOut: number
+  }> {
     try {
       if ((startDate && !endDate) || (!startDate && endDate)) {
         throw new Error('Both startDate and endDate must be provided or neither');
@@ -98,19 +102,29 @@ export class FinancyTypeOrmRepository{
       });
   
       let currentBalance = 0;
+      let cashIn = 0;
+      let cashOut = 0;
   
+      // Itera pelas transações financeiras para calcular os totais
       for (const finance of finances) {
         if (finance.type === 'INCOME') {
+          cashIn += finance.value;
           currentBalance += finance.value;
         } else if (finance.type === 'OUTCOME') {
+          cashOut += finance.value;
           currentBalance -= finance.value;
         }
       }
   
-      return currentBalance;
+      return {
+        currentBalance,
+        cashIn,
+        cashOut,
+      };
     } catch (error) {
       throw new Error('Error calculating current balance: ' + error.message);
     }
   }
+  
   
 }

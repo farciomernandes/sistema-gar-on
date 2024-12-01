@@ -6,7 +6,11 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 export class DbCurrentBalace {
   constructor(private readonly financyRepository: FinancyTypeOrmRepository) {}
 
-  async getCurrentFinancy({ startDate, endDate }: GetBalanceDto): Promise<number> {
+  async getCurrentFinancy({ startDate, endDate }: GetBalanceDto): Promise<{
+    currentBalance: number,
+    cashIn: number,
+    cashOut: number
+  }> {
     try {
       return await this.financyRepository.getCurrentBalance(startDate, endDate);
     } catch (error) {

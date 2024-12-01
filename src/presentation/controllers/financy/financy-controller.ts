@@ -43,12 +43,15 @@ export class FinancyController {
   @ApiOkResponse({
     description: 'Returns balance.',
     status: HttpStatus.OK,
-    type: GetBalanceDto,
   })
   @ApiBearerAuth()
   async getCurrent(
     @Query() payload: GetBalanceDto
-  ): Promise<number> {
+  ): Promise<{
+    currentBalance: number,
+    cashIn: number,
+    cashOut: number
+  }> {
     try {
       return await this.dbCurrentBalace.getCurrentFinancy(payload);
     } catch (error) {
