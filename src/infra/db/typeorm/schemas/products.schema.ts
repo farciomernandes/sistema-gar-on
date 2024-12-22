@@ -38,6 +38,10 @@ export const ProductsSchema = new EntitySchema<Product>({
       type: 'varchar',
       nullable: true
     },
+    size: {
+      type: 'varchar',
+      nullable: true
+    },
     category_id: {
       type: 'uuid',
       nullable: false,

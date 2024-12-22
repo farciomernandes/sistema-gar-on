@@ -36,6 +36,9 @@ export class Product {
   @Column({ type: 'numeric', nullable: true })
   price: number;
 
+  @Column({ type: 'text', nullable: true })
+  size: string;
+
   @Column()
   category_id: string;
 

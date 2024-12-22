@@ -37,6 +37,14 @@ export class UpdateProductModelDto {
   unit: string;
 
   @ApiProperty({
+    type: String,
+    example: '500 ML',
+    required: false,
+  })
+  @IsOptional()
+  size: string;
+
+  @ApiProperty({
     type: Number,
     example: 12,
     required: false,

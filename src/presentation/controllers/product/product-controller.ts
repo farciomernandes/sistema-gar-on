@@ -90,6 +90,7 @@ export class ProductController {
             name: product.name,
             quantity: product.quantity,
             unit: product.unit,
+            size: product.size,
             price: product.price,
             description: product.description,
             category_id: product.category.id
@@ -111,6 +112,7 @@ export class ProductController {
             name: product.name,
             quantity: product.quantity,
             unit: product.unit,
+            size: product.size,
             price: product.price,
             description: product.description,
             category_id: product.category.id

@@ -33,6 +33,16 @@ export class ProductModelDto {
   unit: string;
 
   @ApiProperty({
+    type: String,
+    example: '500 ML',
+    required: false,
+  })
+  @Expose()
+  @IsNotEmpty()
+  @IsString()
+  size: string;
+
+  @ApiProperty({
     type: Number,
     example: 1,
     required: false,
