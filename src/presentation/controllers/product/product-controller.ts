@@ -35,6 +35,30 @@ import { RolesGuard } from '@/infra/guards/roles.guard';
 import { RolesEnum } from '@/shared/enums/roles.enum';
 import { Roles } from '@/shared/decorators/roles.decorator';
 
+interface ProductReturn {
+  category: string;
+  snacks?: [{
+    id: string;
+    name: string;
+    quantity: number;
+    unit: string;
+    price: number;
+    description: string;
+    category_id: string;
+  }];
+  stock?: [{
+    id: string;
+    name: string;
+    quantity: number;
+    unit: string;
+    price: number;
+    description: string;
+    category_id: string;
+  }];
+}
+
+
+
 @ApiTags('Product')
 @Controller('api/v1/products')
 export class ProductController {
@@ -118,12 +142,29 @@ export class ProductController {
         });
       }
     
-      return Object.values(categoriesMap);
+      const productsMapedByCategories = Object.values(categoriesMap);
+      productsMapedByCategories as unknown as ProductReturn[];
+      
+      return this.sortProductsByName(productsMapedByCategories);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
   }
 
+  sortProductsByName(products) {
+    return products.map(category => {
+      category.snacks.sort((a, b) => {
+        const [prefixA, ...namePartsA] = a.name.split(' - ');
+        const [prefixB, ...namePartsB] = b.name.split(' - ');
+  
+        if (prefixA === prefixB) {
+          return namePartsA.join(' - ').localeCompare(namePartsB.join(' - '));
+        }
+        return prefixA.localeCompare(prefixB);
+      });
+      return category;
+    });
+  }
 
   @Put(':id')
   @ApiBody({
