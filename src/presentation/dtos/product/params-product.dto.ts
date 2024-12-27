@@ -44,7 +44,7 @@ export class ProductParamsDTO {
   })
   @Expose()
   @IsOptional()
-  tam?: string;
+  tam: string;
 
   static toDTO(payload: any): ProductParamsDTO {
     return plainToClass(ProductParamsDTO, payload, {

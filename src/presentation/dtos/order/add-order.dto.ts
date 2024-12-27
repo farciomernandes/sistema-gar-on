@@ -35,7 +35,7 @@ export class AddOrderDto {
   })
   @Expose()
   @IsOptional()
-  comment: string;
+  comment?: string;
 
   @ApiProperty({
     type: OrderItemDto,

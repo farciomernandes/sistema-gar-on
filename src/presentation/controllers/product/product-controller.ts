@@ -67,7 +67,7 @@ export class ProductController {
     private readonly dbListProduct: IDbListProductRepository,
     private readonly dbUpdateProduct: IDbUpdateProductRepository,
     private readonly dbDeleteProduct: IDbDeleteProductRepository,
-  ) {}
+  ) { }
 
   @ApiBody({
     description: 'Create Product',
@@ -95,20 +95,20 @@ export class ProductController {
     @Query() queryParams: ProductParamsDTO,
   ): Promise<any> {
     try {
-      const { products } = await this.dbListProduct.getAll(queryParams);
+      const data = await this.dbListProduct.getAll(queryParams);
       const categoriesMap: any = {};
-     
-      if(queryParams.type == 'snack') {
-        products.forEach((product) => {
+
+      if (queryParams.type == 'snack') {
+        data.products.forEach((product) => {
           const categoryName = product.category.name;
-          
+
           if (!categoriesMap[categoryName]) {
             categoriesMap[categoryName] = {
               category: categoryName,
               snacks: [],
             };
           }
-      
+
           categoriesMap[categoryName].snacks.push({
             id: product.id,
             name: product.name,
@@ -116,20 +116,21 @@ export class ProductController {
             unit: product.unit,
             price: product.price,
             description: product.description,
+            tam: product.tam || '',
             category_id: product.category.id
           });
         });
       } else {
-        products.forEach((product) => {
+        data.products.forEach((product) => {
           const categoryName = product.category.name;
-          
+
           if (!categoriesMap[categoryName]) {
             categoriesMap[categoryName] = {
               category: categoryName,
               stock: [],
             };
           }
-      
+
           categoriesMap[categoryName].stock.push({
             id: product.id,
             name: product.name,
@@ -137,14 +138,14 @@ export class ProductController {
             unit: product.unit,
             price: product.price,
             description: product.description,
+            tam: product.tam || '',
             category_id: product.category.id
           });
         });
       }
-    
+
       const productsMapedByCategories = Object.values(categoriesMap);
       productsMapedByCategories as unknown as ProductReturn[];
-      
       return this.sortProductsByName(productsMapedByCategories, queryParams.tam);
     } catch (error) {
       throw new HttpException(error.response, error.status);
@@ -152,11 +153,12 @@ export class ProductController {
   }
 
   sortProductsByName(products, tam: string) {
+    let responsePizzas = null;
     return products.map(category => {
       category.snacks.sort((a, b) => {
         const [prefixA, ...namePartsA] = a.name.split(' - ');
         const [prefixB, ...namePartsB] = b.name.split(' - ');
-  
+
         if (prefixA === prefixB) {
           return namePartsA.join(' - ').localeCompare(namePartsB.join(' - '));
         }
@@ -164,8 +166,18 @@ export class ProductController {
       });
       let response = category;
 
-      if(category.category.toLowerCase().includes("pizza".toLowerCase()) && tam) {
-        response = category.snacks.filter(snack=> snack.tam === tam);
+      if (category.category.toLowerCase().includes("pizza".toLowerCase())) {
+        if (tam === 'P' || tam === 'M' || tam === 'G' || tam === 'FAM') {
+          responsePizzas = {
+            category: category.category,
+            snacks: category.snacks.filter(snack => snack.tam.toLowerCase() === tam.toLowerCase()),
+          };
+
+        }
+      }
+
+      if(responsePizzas) {
+        return responsePizzas;
       }
       return response;
     });
