@@ -179,7 +179,7 @@ export class ProductController {
       if(responsePizzas) {
         return responsePizzas;
       }
-      return response;
+      return response.filter(category=> !category.category.toLowerCase().includes("pizza".toLowerCase()));
     });
   }
 
