@@ -19,6 +19,11 @@ export const OrdersSchema = new EntitySchema<Order>({
       length: 255,
       nullable: false,
     },
+    comment: {
+      type: 'varchar',
+      length: 255,
+      nullable: true,
+    },
     total: {
       type: 'numeric',
       nullable: false,

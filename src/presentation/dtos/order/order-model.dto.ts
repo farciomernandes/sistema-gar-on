@@ -23,6 +23,15 @@ export class OrderModelDto {
 
   @ApiProperty({
     type: String,
+    example: 'comentário opcional..',
+    required: false,
+  })
+  @IsOptional()
+  @Expose()
+  comment: string;
+
+  @ApiProperty({
+    type: String,
     example: 'b1ca0fd0-1874-4f90-96aa-342f3ea08150',
     required: true,
   })

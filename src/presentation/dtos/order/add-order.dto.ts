@@ -1,4 +1,4 @@
-import { IsNumber, Min } from 'class-validator';
+import { IsNumber, IsOptional, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
 import { OrderItemDto } from '../order_item/order_item-model.dto';
@@ -27,6 +27,15 @@ export class AddOrderDto {
   })
   @Expose()
   title: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'comentário opcional..',
+    required: false,
+  })
+  @Expose()
+  @IsOptional()
+  comment: string;
 
   @ApiProperty({
     type: OrderItemDto,

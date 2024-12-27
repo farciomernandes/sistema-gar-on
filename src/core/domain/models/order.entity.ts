@@ -16,6 +16,9 @@ import { Table } from './table.entity';
   
     @Column()
     title: string;
+
+    @Column({ nullable: true })
+    comment: string;
   
     @Column({ type: 'numeric' })
     total: number;
