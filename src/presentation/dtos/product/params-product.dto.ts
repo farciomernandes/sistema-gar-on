@@ -37,6 +37,15 @@ export class ProductParamsDTO {
   @Expose()
   limit: number;
 
+  @ApiProperty({
+    type: String,
+    example: 'P, M, G, FAM',
+    required: false,
+  })
+  @Expose()
+  @IsOptional()
+  tam?: string;
+
   static toDTO(payload: any): ProductParamsDTO {
     return plainToClass(ProductParamsDTO, payload, {
       excludeExtraneousValues: true,

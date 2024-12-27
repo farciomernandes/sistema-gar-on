@@ -145,13 +145,13 @@ export class ProductController {
       const productsMapedByCategories = Object.values(categoriesMap);
       productsMapedByCategories as unknown as ProductReturn[];
       
-      return this.sortProductsByName(productsMapedByCategories);
+      return this.sortProductsByName(productsMapedByCategories, queryParams.tam);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
   }
 
-  sortProductsByName(products) {
+  sortProductsByName(products, tam: string) {
     return products.map(category => {
       category.snacks.sort((a, b) => {
         const [prefixA, ...namePartsA] = a.name.split(' - ');
@@ -162,9 +162,15 @@ export class ProductController {
         }
         return prefixA.localeCompare(prefixB);
       });
-      return category;
+      let response = category;
+
+      if(category.category.toLowerCase().includes("pizza".toLowerCase()) && tam) {
+        response = category.snacks.filter(snack=> snack.tam === tam);
+      }
+      return response;
     });
   }
+
 
   @Put(':id')
   @ApiBody({

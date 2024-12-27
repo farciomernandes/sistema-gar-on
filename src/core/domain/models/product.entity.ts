@@ -20,6 +20,9 @@ export class Product {
   @Column({ type: 'int', nullable: true })
   is_snack: number;
 
+  @Column({ type: 'varchar', length: 6, nullable: true })
+  tam: string;
+
   @ManyToOne(() => Category)
   @JoinColumn({ name: 'category_id' })
   category: Category;

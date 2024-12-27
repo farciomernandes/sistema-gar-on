@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, plainToClass } from 'class-transformer';
-import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { CategoryModelDto } from '../category/category-model.dto';
 
 export class ProductModelDto {
@@ -31,6 +31,16 @@ export class ProductModelDto {
   @IsNotEmpty()
   @IsString()
   unit: string;
+
+
+  @ApiProperty({
+    type: String,
+    example: 'P, M, G, FAM',
+    required: false,
+  })
+  @Expose()
+  @IsOptional()
+  tam?: string;
 
   @ApiProperty({
     type: Number,

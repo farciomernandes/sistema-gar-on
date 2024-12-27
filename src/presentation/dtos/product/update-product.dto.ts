@@ -37,6 +37,14 @@ export class UpdateProductModelDto {
   unit: string;
 
   @ApiProperty({
+    type: String,
+    example: 'P, M, G, FAM',
+    required: false,
+  })
+  @IsOptional()
+  tam?: string;
+
+  @ApiProperty({
     type: Number,
     example: 12,
     required: false,

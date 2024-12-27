@@ -37,6 +37,15 @@ export class AddProductModelDto {
 
   @ApiProperty({
     type: String,
+    example: 'P, M, G, FAM',
+    required: false,
+  })
+  @Expose()
+  @IsOptional()
+  tam?: string;
+
+  @ApiProperty({
+    type: String,
     example: 'KG',
     required: false,
   })
