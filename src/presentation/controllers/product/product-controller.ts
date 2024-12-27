@@ -146,46 +146,54 @@ export class ProductController {
 
       const productsMapedByCategories = Object.values(categoriesMap);
       productsMapedByCategories as unknown as ProductReturn[];
-      return this.sortProductsByName(productsMapedByCategories, queryParams.tam, queryParams.type);
+      const products = this.sortProductsByName(productsMapedByCategories, queryParams.tam, queryParams.type);
+
+      if (queryParams.tam) {
+        if ((queryParams.tam === 'P' || queryParams.tam === 'M' || queryParams.tam === 'G' || queryParams.tam === 'FAM')) {
+
+          const filteredProducts = products.filter((product: any) => product.category.toLowerCase().includes('pizza'));
+          return filteredProducts;
+        }
+      }
+
+      return products;
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
   }
 
   sortProductsByName(products, tam: string, type: string) {
-    let responsePizzas = null;
     return products.map(category => {
+      // Ordena os snacks da categoria
       category.snacks.sort((a, b) => {
         const [prefixA, ...namePartsA] = a.name.split(' - ');
         const [prefixB, ...namePartsB] = b.name.split(' - ');
-
+  
         if (prefixA === prefixB) {
           return namePartsA.join(' - ').localeCompare(namePartsB.join(' - '));
         }
         return prefixA.localeCompare(prefixB);
       });
-      let response = category;
-
-      if (category.category.toLowerCase().includes("pizza".toLowerCase())) {
+  
+      // Caso a categoria seja "PIZZA" e tenha um tamanho, filtra os snacks pela categoria de tamanho
+      if (category.category.toLowerCase().includes("pizza") && tam) {
         if (tam === 'P' || tam === 'M' || tam === 'G' || tam === 'FAM') {
-          responsePizzas = {
-            category: category.category,
-            snacks: category.snacks.filter(snack => snack.tam.toLowerCase() === tam.toLowerCase()),
+          // Filtra os snacks por tamanho
+          const filteredSnacks = category.snacks.filter(snack => snack.tam.toLowerCase() === tam.toLowerCase());
+  
+          // Retorna uma categoria modificada com os snacks filtrados
+          return {
+            ...category,
+            snacks: filteredSnacks
           };
-
         }
       }
-
-      if(responsePizzas) {
-        return responsePizzas;
-      }
-      if(type === 'snack') {
-        return response.filter(category=> !category.category.toLowerCase().includes("pizza".toLowerCase()));
-      }
-      return response;
+  
+      // Caso não seja "PIZZA" ou não tenha o tamanho, retorna a categoria original
+      return category;
     });
   }
-
+  
 
   @Put(':id')
   @ApiBody({

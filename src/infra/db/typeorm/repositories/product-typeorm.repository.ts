@@ -67,7 +67,7 @@ export class ProductTypeOrmRepository implements ProductRepository {
     }
     queryBuilder.leftJoinAndSelect('product.category', 'category');
 
-    queryBuilder.andWhere('product.is_snack = :snack', { snack: mapProduct[type] });
+    queryBuilder.andWhere('product.is_snack = :snack', { snack: mapProduct[type] || 1 });
 
     if(id) {
       queryBuilder.andWhere('product.id = :id', { id });
